@@ -1,0 +1,30 @@
+[
+    {
+        "model": "erp.expensegroup",
+        "pk": "e58c7266-8d43-47fb-b116-be2e919f1a80",
+        "fields": {
+            "name": "Материалы"
+        }
+    },
+    {
+        "model": "erp.expensegroup",
+        "pk": "0fa7d81b-8330-411e-a1c1-6b9f2d30462c",
+        "fields": {
+            "name": "Фонд оплаты труда"
+        }
+    },
+    {
+        "model": "erp.expensegroup",
+        "pk": "6972e405-0c19-4e35-96f8-1f45387d5131",
+        "fields": {
+            "name": "Реклама"
+        }
+    },
+    {
+        "model": "erp.expensegroup",
+        "pk": "d5c90870-32e2-4fc4-92b7-4aca135f2d07",
+        "fields": {
+            "name": "Аренда"
+        }
+    }
+]

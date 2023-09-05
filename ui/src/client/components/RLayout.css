@@ -1,0 +1,244 @@
+.Layout {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+
+	&-Main {
+		min-height: 100vh;
+		position: relative;
+	}
+
+	&-Navigation {
+		width: 100%;
+		border-right: 1px solid var(--color-bg-border);
+		box-sizing: border-box;
+
+		overflow-x: hidden;
+		overflow-y: auto;
+
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 9999;
+
+		transform: translate3d(-100%, 0, 0);
+		transition: transform 0.32s;
+		transition-timing-function: ease-in;
+
+		&_visible {
+			transform: translate3d(0, 0, 0);
+		}
+	}
+
+	&-Navigation {
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		&::-webkit-scrollbar-corner,
+		&::-webkit-scrollbar-track {
+			background-color: rgba(0, 66, 105, 0);
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 66, 105, 0.12);
+		}
+
+		&::-webkit-scrollbar-thumb:hover {
+			background-color: rgba(0, 66, 105, 0.24);
+		}
+	}
+
+	&-Inner {
+		transition: margin-left 0.32s; /* , max-width 0.32s */
+		transition-timing-function: ease-in;
+	}
+
+	&-Content {
+		width: 100%;
+	}
+}
+
+@media screen and (min-width: 960px) {
+	.Layout {
+		&-Main {
+			--navigation-width: 280px;
+		}
+
+		&-Navigation {
+			max-width: var(--navigation-width);
+		}
+
+		&-Inner {
+			max-width: calc(100% - var(--navigation-width));
+			width: 100%;
+			margin-left: var(--navigation-width);
+		}
+
+		&-Main_only_content &-Inner {
+			max-width: 100%;
+			margin-left: 0px;
+		}
+	}
+}
+
+@media screen and (max-width: 959px) {
+	.Layout-Navigation {
+		right: 0;
+		transform: translate3d(0, 80px, 0);
+		opacity: 0;
+		transition: transform 0.24s, opacity 0.12s;
+		transition-timing-function: ease-out;
+		pointer-events: none;
+
+		&_visible {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+			pointer-events: initial;
+		}
+	}
+}
+
+/* ------------------------------------------------------------- */
+
+.Header {
+	&-Left {
+		display: flex;
+		align-items: center;
+	}
+
+	&-Navigation-Button {
+		margin-left: -12px;
+		margin-right: 12px;
+		/* box-shadow: none !important; */
+	}
+
+	&-Logo-Link {
+		margin-right: 32px;
+		display: flex;
+		text-decoration: none;
+		user-select: none;
+
+		& > .Text {
+			margin-right: 4px;
+		}
+	}
+
+	&-User-Main > .User {
+		cursor: pointer;
+		user-select: none;
+	}
+
+	&-User-Skeleton {
+		display: flex;
+		width: 200px;
+
+		&-Avatar {
+			flex-shrink: 0;
+		}
+
+		&-Text {
+			margin-left: var(--space-s);
+		}
+	}
+}
+
+/* ------------------------------------------------------------- */
+
+.Navigation {
+	width: 100%;
+	height: 100%;
+	padding-bottom: 40px;
+	box-sizing: border-box;
+	background-color: var(--color-bg-default);
+
+	&-Action {
+		padding: var(--space-xl);
+	}
+
+	&-Label {
+		padding: 12px var(--space-xl);
+	}
+
+	&-Label > a {
+		text-decoration: none;
+	}
+
+	&-EmptyList {
+		padding: var(--space-xl);
+	}
+
+	&-Skeleton {
+		margin: 8px 20px;
+	}
+
+	&-Item {
+		padding: 12px var(--space-xl);
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		transition: background-color 0.08s;
+		position: relative;
+
+		&_active::after {
+			content: "";
+			display: block;
+
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+
+			border-right: 2px solid var(--color-control-bg-primary);
+			border-radius: var(--control-radius);
+			margin-right: -1px;
+		}
+
+		&:hover {
+			background-color: var(--color-bg-secondary);
+		}
+
+		& > .Text {
+			margin-right: 16px;
+		}
+	}
+
+	&-Status {
+		min-width: 8px;
+		min-height: 8px;
+		width: 8px;
+		height: 8px;
+		border-radius: 48px;
+
+		&_done {
+			background-color: var(--color-bg-success);
+		}
+
+		&_in-progress {
+			background-color: var(--color-bg-brand);
+		}
+
+		&_in-waiting {
+			background-color: var(--color-bg-warning);
+		}
+	}
+}
+
+@media screen and (max-width: 959px) {
+	.Navigation-Action > .Button {
+		height: 48px;
+	}
+
+	.Navigation-Item {
+		padding: 14px var(--space-xl);
+	}
+}
+
+/* ------------------------------------------------------------- */
+
+/*  */
+
+/* ------------------------------------------------------------- */
+
+/*  */

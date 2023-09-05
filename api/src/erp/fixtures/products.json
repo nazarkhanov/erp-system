@@ -1,0 +1,15 @@
+[
+    {
+        "model": "erp.product",
+        "pk": "c8f8515a-40b6-4fcd-95e7-c6301dec1877",
+        "fields": {
+            "project": "bcf4b305-ca5e-4a5c-ad33-b2ca5c77b502",
+            "owner": "e93d9d59-b4c2-40c8-9846-362382eb038e",
+            "name": "",
+            "quantity": 1,
+            "margin": 0.0,
+            "unitPrice": "0.00",
+            "totalPrice": "0.00"
+        }
+    }
+]

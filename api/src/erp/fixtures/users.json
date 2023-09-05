@@ -1,0 +1,22 @@
+[
+    {
+        "model": "erp.user",
+        "pk": "e93d9d59-b4c2-40c8-9846-362382eb038e",
+        "fields": {
+            "password": "pbkdf2_sha256$600000$y0XWO8yRnPYgul5uQgl4n2$xWJhIVMzttxlpdNfxz6cIJQaPJOyebRmrq5w97czVyc=",
+            "last_login": "2023-09-02T12:32:56.670Z",
+            "is_superuser": true,
+            "username": "",
+            "is_staff": true,
+            "date_joined": "2023-09-02T12:32:46.129Z",
+            "email": "test@erp.test",
+            "first_name": "Алишер",
+            "last_name": "Назарханов",
+            "is_active": true,
+            "is_customer": true,
+            "position": "Владелец",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

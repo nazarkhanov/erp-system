@@ -1,0 +1,149 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-02 16:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: src/erp/models.py:12
+msgid "Users must have an email address"
+msgstr "Пользователи обязательно должны иметь почту"
+
+#: src/erp/models.py:29
+msgid "Superuser must have is_staff=True."
+msgstr "Суперпользователь должен иметь is_staff=True"
+
+#: src/erp/models.py:31
+msgid "Superuser must have is_customer=True."
+msgstr "Суперпользователь должен иметь is_customer=True"
+
+#: src/erp/models.py:33
+msgid "Superuser must have is_superuser=True."
+msgstr "Суперпользователь должен иметь is_superuser=True"
+
+#: src/erp/models.py:41
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: src/erp/models.py:42
+msgid "First name"
+msgstr "Имя"
+
+#: src/erp/models.py:43
+msgid "Last name"
+msgstr "Фамилия"
+
+#: src/erp/models.py:44
+msgid "Is user active?"
+msgstr "Это пользователь активный?"
+
+#: src/erp/models.py:45
+msgid "Is user customer?"
+msgstr "Этот пользователь является клиентом?"
+
+#: src/erp/models.py:46
+msgid "Position"
+msgstr "Должность"
+
+#: src/erp/models.py:46 src/erp/models.py:70 src/erp/models.py:91
+#: src/erp/models.py:132
+msgid "Owner"
+msgstr "Владелец"
+
+#: src/erp/models.py:59
+msgid "Project"
+msgstr "Проект"
+
+#: src/erp/models.py:60
+msgid "Projects"
+msgstr "Проекты"
+
+#: src/erp/models.py:63
+msgid "Draft"
+msgstr "Черновик"
+
+#: src/erp/models.py:64
+msgid "In waiting"
+msgstr "В ожидании"
+
+#: src/erp/models.py:65
+msgid "In progress"
+msgstr "В работе"
+
+#: src/erp/models.py:66
+msgid "Done"
+msgstr "Выполнено"
+
+#: src/erp/models.py:72
+msgid "Title"
+msgstr "Название"
+
+#: src/erp/models.py:72
+msgid "Untitled"
+msgstr "Без названия"
+
+#: src/erp/models.py:73
+msgid "Status"
+msgstr "Статус"
+
+#: src/erp/models.py:84
+msgid "Product"
+msgstr "Товар"
+
+#: src/erp/models.py:85
+msgid "Products"
+msgstr "Товары"
+
+#: src/erp/models.py:93 src/erp/models.py:113 src/erp/models.py:134
+msgid "Name"
+msgstr "Название"
+
+#: src/erp/models.py:94
+msgid "Quantity"
+msgstr "Количество"
+
+#: src/erp/models.py:95
+msgid "Margin"
+msgstr "Маржа (%)"
+
+#: src/erp/models.py:96
+msgid "Unit price"
+msgstr "Цена за единицу (тг)"
+
+#: src/erp/models.py:98
+msgid "Total price"
+msgstr "Итоговая цена (тг)"
+
+#: src/erp/models.py:109 src/erp/models.py:130
+msgid "Expense group"
+msgstr "Группа затраты"
+
+#: src/erp/models.py:110
+msgid "Expense groups"
+msgstr "Группы затрат"
+
+#: src/erp/models.py:123
+msgid "Expense"
+msgstr "Затрата"
+
+#: src/erp/models.py:124
+msgid "Expenses"
+msgstr "Затраты"
+
+#: src/erp/models.py:135
+msgid "Total expenses"
+msgstr "Итоговые затраты (тг)"

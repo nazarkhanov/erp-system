@@ -1,0 +1,53 @@
+.Card {
+	width: 100%;
+	height: 100%;
+	padding: var(--space-m) var(--space-xl) var(--space-2xl);
+	border-radius: 8px;
+	box-sizing: border-box;
+
+	display: flex;
+	flex-direction: column;
+	background-color: var(--color-bg-default);
+	box-shadow: var(--shadow-layer);
+	position: relative;
+
+	& > a {
+		text-decoration: none;
+	}
+
+	& > a .Text {
+		transition: color 0.08s;
+	}
+
+	& > a:hover .Text {
+		color: var(--color-typo-link-hover);
+	}
+
+	&-Status {
+		margin-bottom: var(--space-xl);
+	}
+
+	&-Actions {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+	}
+
+	&-Title {
+		margin-bottom: var(--space-m);
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	&-Actions > .Button {
+		box-shadow: none !important;
+	}
+}
+
+@media screen and (max-width: 431px) {
+	.Card {
+		box-shadow: var(--shadow-group);
+	}
+}

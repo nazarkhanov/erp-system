@@ -1,0 +1,52 @@
+.Pager {
+	padding: var(--space-4xl) var(--space-4xl) var(--space-xl);
+
+	&-Top {
+		margin-bottom: var(--space-m);
+	}
+
+	&-Bottom {
+		padding-top: var(--space-xl);
+	}
+
+	&-Center {
+		display: flex;
+		align-items: center;
+	}
+
+	&-Center &-Left {
+		flex-grow: 1;
+		margin-right: 20px;
+
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	&-Center &-Left > .Text {
+		margin-right: 12px;
+	}
+
+	&-Center &-Left > .Badge {
+		margin: 12px 0;
+	}
+}
+
+@media screen and (max-width: 799px) {
+	.Pager {
+		padding: var(--space-3xl) var(--space-xl);
+
+		&-Top {
+			margin-bottom: var(--space-2xl);
+		}
+
+		&-Center {
+			flex-direction: column;
+			align-items: start;
+		}
+
+		&-Center &-Left {
+			margin-bottom: var(--space-m);
+		}
+	}
+}

@@ -1,0 +1,15 @@
+.Cabinet-List {
+	padding-bottom: var(--space-5xl);
+}
+
+@media screen and (min-width: 800px) {
+	.Cabinet-List-All {
+		padding: var(--space-4xl);
+	}
+}
+
+@media screen and (min-width: 432px) and (max-width: 799px) {
+	.Cabinet-List-All {
+		padding: 0 var(--space-xl) var(--space-3xl);
+	}
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/app/container/src/manage.py loaddata erp/fixtures/*.json

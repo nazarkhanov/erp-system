@@ -1,0 +1,13 @@
+[
+    {
+        "model": "erp.expense",
+        "pk": "7798592f-bac8-4bae-8647-974febbfcd84",
+        "fields": {
+            "project": "bcf4b305-ca5e-4a5c-ad33-b2ca5c77b502",
+            "group": "e58c7266-8d43-47fb-b116-be2e919f1a80",
+            "owner": "e93d9d59-b4c2-40c8-9846-362382eb038e",
+            "name": "",
+            "totalPrice": "0.00"
+        }
+    }
+]

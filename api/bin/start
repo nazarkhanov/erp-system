@@ -1,0 +1,4 @@
+#!/bin/bash
+
+/app/container/src/manage.py migrate
+/app/container/src/manage.py runserver

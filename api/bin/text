@@ -1,0 +1,14 @@
+#!/bin/bash
+
+run_command() {
+    if [ "$1" == "index" ]; then
+        django-admin makemessages -l ru
+    elif [ "$1" == "generate" ]; then 
+        django-admin compilemessages
+    else
+        echo -e "Invalid command. Please use 'index' or 'generate'"
+        exit 1
+    fi
+}
+
+run_command $1

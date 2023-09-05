@@ -1,0 +1,75 @@
+.Cabinet-ItemEdit {
+	padding: 0 var(--space-m);
+
+	&-Actions {
+		margin: 32px 0;
+	}
+
+	&-Form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&-Form > * {
+		margin-bottom: 28px;
+	}
+
+	&-Actions {
+		margin-top: 80px;
+	}
+
+	&-Group {
+		margin-top: 40px;
+	}
+
+	&-Group-Title {
+		margin-bottom: 20px;
+	}
+
+	&-Group-Actions {
+		margin-bottom: 32px;
+	}
+
+	&-Table {
+		width: 100%;
+		border: var(--control-border-width) solid
+			var(--color-control-bg-border-default);
+		border-radius: var(--control-radius);
+	}
+
+	&-Cell-TextField {
+		flex-grow: 1;
+	}
+
+	&-Cell-Text {
+		height: 40px;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		flex-grow: 1;
+	}
+
+	&-Button-Add {
+		margin-top: 20px;
+	}
+
+	&-Button-One {
+		margin-right: 12px;
+	}
+
+	&-Modal-TextField {
+		margin-bottom: 20px;
+	}
+}
+
+@media screen and (min-width: 800px) {
+	.Cabinet-ItemEdit {
+		padding: var(--space-4xl);
+	}
+}
+
+@media screen and (min-width: 432px) and (max-width: 799px) {
+	.Cabinet-ItemEdit {
+		padding: 0 var(--space-xl) var(--space-3xl);
+	}
+}
