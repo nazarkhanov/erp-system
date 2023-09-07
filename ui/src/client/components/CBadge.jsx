@@ -15,8 +15,6 @@ const STATUS_CONST = {
 };
 
 function Badge({ status }) {
-	console.log(status);
-
 	return (
 		<uikit.Badge
 			view="stroked"

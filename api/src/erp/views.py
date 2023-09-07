@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, mixins
 
 import erp.models as models
 import erp.serializers as serializers 
@@ -38,3 +38,11 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         project = get_object_or_404(models.Project, pk=self.kwargs['project_pk'])
         group = get_object_or_404(models.ExpenseGroup, pk=self.request.data['group_id'])
         serializer.save(owner=self.request.user, project=project, group=group)
+
+
+class ExpenseGroupViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = serializers.ExpenseGroupSerializer
+    permission_classes = [permissions.IsAuthenticated, user_permissions.IsOwner]
+
+    def get_queryset(self):
+        return models.ExpenseGroup.objects.all()

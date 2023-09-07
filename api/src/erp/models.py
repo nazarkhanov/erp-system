@@ -110,7 +110,8 @@ class ExpenseGroup(models.Model):
         verbose_name_plural = _('Expense groups')
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(_('Name'), default='', max_length=255, blank=False)
+    key = models.CharField(_('Key'), default='', max_length=255, blank=False)
+    value = models.CharField(_('Value'), default='', max_length=255, blank=False)
 
     REQUIRED_FIELDS = ['name']
 
@@ -132,7 +133,8 @@ class Expense(models.Model):
                               null=False, verbose_name=_('Owner'))
 
     name = models.CharField(_('Name'), default='', max_length=255, blank=False)
-    totalPrice = models.DecimalField(_('Total expenses'), max_digits=15, decimal_places=2, 
+    quantity = models.PositiveIntegerField(_('Quantity'), default=1, blank=False)
+    total = models.DecimalField(_('Total expenses'), max_digits=15, decimal_places=2, 
                                      default=0.0, blank=False)
 
     REQUIRED_FIELDS = ['name']

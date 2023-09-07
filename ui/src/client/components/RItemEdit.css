@@ -2,7 +2,7 @@
 	padding: 0 var(--space-m);
 
 	&-Actions {
-		margin: 32px 0;
+		margin: 32px 0 48px;
 	}
 
 	&-Form {
@@ -12,10 +12,6 @@
 
 	&-Form > * {
 		margin-bottom: 28px;
-	}
-
-	&-Actions {
-		margin-top: 80px;
 	}
 
 	&-Group {

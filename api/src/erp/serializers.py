@@ -29,3 +29,10 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Expense
         fields = ['id', 'name', 'totalPrice', 'owner', 'project', 'group']
+
+
+
+class ExpenseGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ExpenseGroup
+        fields = ['id', 'key', 'value']

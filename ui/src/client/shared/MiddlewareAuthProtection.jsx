@@ -19,7 +19,7 @@ export function Middleware({ children }) {
 			return navigate("/");
 		}
 
-		const isAuthenticated = !verify.isError && location.pathname === "/";
+		const isAuthenticated = verify.isSuccess && location.pathname === "/";
 
 		if (isAuthenticated) {
 			return navigate("/cabinet");

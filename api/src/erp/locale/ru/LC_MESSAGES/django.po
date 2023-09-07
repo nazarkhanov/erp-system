@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-02 16:33+0000\n"
+"POT-Creation-Date: 2023-09-06 17:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgid "Position"
 msgstr "Должность"
 
 #: src/erp/models.py:46 src/erp/models.py:70 src/erp/models.py:91
-#: src/erp/models.py:132
+#: src/erp/models.py:133
 msgid "Owner"
 msgstr "Владелец"
 
@@ -108,11 +108,11 @@ msgstr "Товар"
 msgid "Products"
 msgstr "Товары"
 
-#: src/erp/models.py:93 src/erp/models.py:113 src/erp/models.py:134
+#: src/erp/models.py:93 src/erp/models.py:135
 msgid "Name"
 msgstr "Название"
 
-#: src/erp/models.py:94
+#: src/erp/models.py:94 src/erp/models.py:136
 msgid "Quantity"
 msgstr "Количество"
 
@@ -128,7 +128,7 @@ msgstr "Цена за единицу (тг)"
 msgid "Total price"
 msgstr "Итоговая цена (тг)"
 
-#: src/erp/models.py:109 src/erp/models.py:130
+#: src/erp/models.py:109 src/erp/models.py:131
 msgid "Expense group"
 msgstr "Группа затраты"
 
@@ -136,14 +136,22 @@ msgstr "Группа затраты"
 msgid "Expense groups"
 msgstr "Группы затрат"
 
-#: src/erp/models.py:123
+#: src/erp/models.py:113
+msgid "Key"
+msgstr "Ключ"
+
+#: src/erp/models.py:114
+msgid "Value"
+msgstr "Значение"
+
+#: src/erp/models.py:124
 msgid "Expense"
 msgstr "Затрата"
 
-#: src/erp/models.py:124
+#: src/erp/models.py:125
 msgid "Expenses"
 msgstr "Затраты"
 
-#: src/erp/models.py:135
+#: src/erp/models.py:137
 msgid "Total expenses"
 msgstr "Итоговые затраты (тг)"

@@ -30,6 +30,8 @@ api.interceptors.response.use(
 			error.config.headers["Authorization"] &&
 			window.location.pathname !== "/"
 		) {
+			localStorage.removeItem("access");
+			localStorage.removeItem("refresh");
 			window.location = "/";
 		}
 
