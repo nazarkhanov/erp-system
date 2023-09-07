@@ -110,7 +110,7 @@ export const useUpdate = ({ id }) => {
 				error = e;
 			}
 
-			if (response.status !== 200) throw new Errors.Unknown(error);
+			if (response.status !== 200) throw new errors.Unknown(error);
 
 			return response.data;
 		},

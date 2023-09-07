@@ -69,3 +69,23 @@
 		padding: 0 var(--space-xl) var(--space-3xl);
 	}
 }
+
+.Modal-Portal {
+	width: 100%;
+
+	&-Header {
+		padding: var(--space-s) var(--space-l);
+	}
+
+	&-Body {
+		padding: 0 var(--space-l);
+	}
+
+	&-TextField {
+		margin-bottom: 28px;
+	}
+
+	&-Footer {
+		padding: var(--space-l) var(--space-l) var(--space-xl);
+	}
+}

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, mixins
+from rest_framework import viewsets, permissions, mixins, response
 
 import erp.models as models
 import erp.serializers as serializers 
@@ -20,7 +20,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, user_permissions.IsOwner]
 
     def get_queryset(self):
-        return models.Product.objects.filter(project=self.kwargs['project_pk'])
+        return models.Product.objects.filter(owner=self.request.user, 
+                                             project__id=self.kwargs['project_pk'])
 
     def perform_create(self, serializer):
         project = get_object_or_404(models.Project, pk=self.kwargs['project_pk'])
@@ -32,12 +33,20 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, user_permissions.IsOwner]
 
     def get_queryset(self):
-        return models.Expense.objects.filter(project=self.kwargs['project_pk'])
+        return models.Expense.objects.filter(owner=self.request.user,
+                                             project=self.kwargs['project_pk'])
 
     def perform_create(self, serializer):
         project = get_object_or_404(models.Project, pk=self.kwargs['project_pk'])
         group = get_object_or_404(models.ExpenseGroup, pk=self.request.data['group_id'])
         serializer.save(owner=self.request.user, project=project, group=group)
+
+    def retrieve(self, request, pk=None, project_pk=None):
+        expenses = models.Expense.objects.filter(owner=self.request.user,
+                                                 project__id=project_pk,
+                                                 group__id=pk)
+        serializer = self.get_serializer(expenses, many=True)
+        return response.Response(serializer.data)
 
 
 class ExpenseGroupViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

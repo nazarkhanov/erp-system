@@ -12,7 +12,7 @@ import * as expenses from "@/external/expenses";
 
 const cn = utils.useClassName("Cabinet-ItemEdit");
 
-const STATES_CONST = {
+const FORM_STATES_CONST = {
 	DEFAULT: "default",
 	LOADING: "loading",
 	LOADED: "loaded",
@@ -22,19 +22,20 @@ function ItemEdit() {
 	const project = ReactRouter.useOutletContext();
 	const update = projects.useUpdate({ id: project.id });
 	const groups = expenses.useGroups({ id: project.id });
-	const [state, setState] = React.useState(STATES_CONST.DEFAULT);
+
+	const [formState, setFormState] = React.useState(FORM_STATES_CONST.DEFAULT);
 
 	const handleSubmit = async (data) => {
-		if (state !== STATES_CONST.DEFAULT) return;
+		if (formState !== FORM_STATES_CONST.DEFAULT) return;
 
-		setState(STATES_CONST.LOADING);
+		setFormState(FORM_STATES_CONST.LOADING);
 
 		await update.mutateAsync(data);
 
-		setState(STATES_CONST.LOADED);
+		setFormState(FORM_STATES_CONST.LOADED);
 
 		setTimeout(() => {
-			setState(STATES_CONST.DEFAULT);
+			setFormState(FORM_STATES_CONST.DEFAULT);
 		}, 1000);
 	};
 
@@ -79,15 +80,14 @@ function ItemEdit() {
 							<uikit.Button
 								className={cn("Button")}
 								label={
-									state === STATES_CONST.LOADED
-										? "Сохранено"
-										: state === STATES_CONST.LOADING
-										? "Сохраняется"
-										: "Сохранить"
+									{
+										[FORM_STATES_CONST.LOADED]: "Сохранено",
+										[FORM_STATES_CONST.LOADING]: "Сохраняется",
+									}?.[formState] || "Сохранить"
 								}
 								size="l"
 								type="submit"
-								disabled={state !== STATES_CONST.DEFAULT}
+								disabled={formState !== FORM_STATES_CONST.DEFAULT}
 							/>
 						</div>
 
@@ -147,7 +147,6 @@ function Select({ form, ...props }) {
 
 	return (
 		<uikit.Select
-			{...props}
 			id={props.name}
 			size="m"
 			labelPosition="top"
@@ -166,12 +165,24 @@ function Select({ form, ...props }) {
 			getItemKey={(item) => item.label}
 			getItemLabel={(item) => item.label}
 			ref={ref}
+			{...props}
 		/>
 	);
 }
 
+const MODAL_STATES_CONST = {
+	CREATE: "create",
+	UPDATE: "update",
+	DELETE: "delete",
+};
+
 function ProductsTable({ project }) {
-	const list = projects.useList({ id: project.id });
+	const { isSmart } = utils.useMediaQuery();
+
+	const list = products.useList({ project_id: project.id });
+	const createOne = products.useCreate({ project_id: project.id });
+	const updateOne = products.useUpdate({ project_id: project.id });
+	const deleteOne = products.useDelete({ project_id: project.id });
 
 	const cols = [
 		{
@@ -198,14 +209,85 @@ function ProductsTable({ project }) {
 
 	const rows = list.data || [];
 
-	console.log(list.data);
+	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const [modalState, setModalState] = React.useState(null);
+
+	const handleOpen = (action) => {
+		setModalState(action);
+		setIsModalOpen(true);
+	};
+
+	const handleClose = () => {
+		setIsModalOpen(false);
+	};
+
+	const [formState, setFormState] = React.useState(FORM_STATES_CONST.DEFAULT);
+	const [productData, setProductData] = React.useState(null);
+
+	const handleSubmit = async (data) => {
+		if (formState !== FORM_STATES_CONST.DEFAULT) return;
+
+		setFormState(FORM_STATES_CONST.LOADING);
+
+		switch (modalState) {
+			case MODAL_STATES_CONST.CREATE:
+				await createOne.mutateAsync({ data });
+				break;
+			case MODAL_STATES_CONST.UPDATE:
+				await updateOne.mutateAsync({ product_id: productData.id, data });
+				break;
+			case MODAL_STATES_CONST.DELETE:
+				await deleteOne.mutateAsync({ product_id: productData.id, data });
+				break;
+
+			default:
+				break;
+		}
+
+		setFormState(FORM_STATES_CONST.LOADED);
+
+		setTimeout(() => {
+			setFormState(FORM_STATES_CONST.DEFAULT);
+			handleClose();
+		}, 320);
+	};
+
+	cols.push({
+		type: "toolbar",
+		title: "Действия",
+		accessor: "actions",
+		renderCell: (row) => {
+			return (
+				<>
+					<ActionButton
+						className={cn("Button-One")}
+						size="xs"
+						text="Редактировать"
+						icon={uikit.Icons.Edit}
+						onClick={() =>
+							setProductData(row) | handleOpen(MODAL_STATES_CONST.UPDATE)
+						}
+					/>
+
+					<ActionButton
+						className={cn("Button-One")}
+						size="xs"
+						text="Удалить"
+						icon={uikit.Icons.Trash}
+						onClick={() =>
+							setProductData(row) | handleOpen(MODAL_STATES_CONST.DELETE)
+						}
+					/>
+				</>
+			);
+		},
+	});
 
 	return (
 		<div className={cn("Group")}>
 			<uikit.Text className={cn("Group-Title")} view="secondary">
 				Информация о продуктах
 			</uikit.Text>
-
 			<uikit.Table
 				className={cn("Table")}
 				columns={cols}
@@ -213,17 +295,112 @@ function ProductsTable({ project }) {
 				borderBetweenColumns
 				borderBetweenRows
 			/>
-
 			<ActionButton
+				className={cn("Button-Add")}
 				icon={uikit.Icons.Add}
 				text="Добавить"
-				onClick={() => console.log("clicked add")}
+				onClick={() =>
+					setProductData(null) | handleOpen(MODAL_STATES_CONST.CREATE)
+				}
 			/>
+			<uikit.Modal
+				className="Modal-Portal"
+				hasOverlay
+				isOpen={isModalOpen}
+				onClickOutside={() => handleClose()}
+				onEsc={() => handleClose()}
+				style={{ maxWidth: isSmart ? "640px" : "90%" }}
+			>
+				<Formik
+					initialValues={{
+						name: productData?.name || "",
+						quantity: productData?.quantity || "",
+						margin: productData?.margin || "",
+						unitPrice: productData?.unitPrice || "",
+						totalPrice: productData?.totalPrice || "",
+					}}
+					validationSchema={Yup.object({
+						name: Yup.string().trim().required("Это обязательное поле"),
+						quantity: Yup.string().trim().required("Это обязательное поле"),
+						margin: Yup.string().trim().required("Это обязательное поле"),
+						unitPrice: Yup.string().trim().required("Это обязательное поле"),
+						totalPrice: Yup.string().trim().required("Это обязательное поле"),
+					})}
+					onSubmit={handleSubmit}
+				>
+					{(form) => (
+						<form className="Modal-Portal-Form" onSubmit={form.handleSubmit}>
+							<uikit.Text
+								className="Modal-Portal-Header"
+								as="p"
+								size="l"
+								view="secondary"
+							>
+								{{
+									[MODAL_STATES_CONST.CREATE]: "Создание",
+									[MODAL_STATES_CONST.UPDATE]: "Редактирование",
+									[MODAL_STATES_CONST.DELETE]: "Удаление",
+								}?.[modalState] || "Действие"}
+							</uikit.Text>
+
+							<div className="Modal-Portal-Body">
+								{cols
+									.filter((v) => !v.type)
+									.map((v) => (
+										<TextField
+											className="Modal-Portal-TextField"
+											type="text"
+											width="full"
+											label={v.title}
+											name={v.accessor}
+											key={v.accessor}
+											form={form}
+											disabled={modalState === MODAL_STATES_CONST.DELETE}
+										/>
+									))}
+							</div>
+
+							<div className="Modal-Portal-Footer">
+								<uikit.Button
+									size="m"
+									view="primary"
+									label={
+										{
+											[MODAL_STATES_CONST.CREATE]: "Создать",
+											[MODAL_STATES_CONST.UPDATE]: "Сохранить",
+											[MODAL_STATES_CONST.DELETE]: "Удалить",
+										}?.[modalState] || "Выполнить"
+									}
+									width="default"
+									type="submit"
+									disabled={formState !== FORM_STATES_CONST.DEFAULT}
+								/>
+							</div>
+						</form>
+					)}
+				</Formik>
+			</uikit.Modal>
 		</div>
 	);
 }
 
-function ExpensesTable({ group }) {
+function ExpensesTable({ project, group }) {
+	const { isSmart } = utils.useMediaQuery();
+
+	const list = expenses.useList({ project_id: project.id, group_id: group.id });
+	const createOne = expenses.useCreate({
+		project_id: project.id,
+		group_id: group.id,
+	});
+	const updateOne = expenses.useUpdate({
+		project_id: project.id,
+		group_id: group.id,
+	});
+	const deleteOne = expenses.useDelete({
+		project_id: project.id,
+		group_id: group.id,
+	});
+
 	const cols = [
 		{
 			title: "Название",
@@ -239,14 +416,88 @@ function ExpensesTable({ group }) {
 		},
 	];
 
-	const rows = [];
+	const rows = list.data || [];
+
+	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const [modalState, setModalState] = React.useState(null);
+
+	const handleOpen = (action) => {
+		setModalState(action);
+		setIsModalOpen(true);
+	};
+
+	const handleClose = () => {
+		setIsModalOpen(false);
+	};
+
+	const [formState, setFormState] = React.useState(FORM_STATES_CONST.DEFAULT);
+	const [expenseData, setExpenseData] = React.useState(null);
+
+	const handleSubmit = async (data) => {
+		if (formState !== FORM_STATES_CONST.DEFAULT) return;
+		data.group_id = group.id;
+
+		setFormState(FORM_STATES_CONST.LOADING);
+
+		switch (modalState) {
+			case MODAL_STATES_CONST.CREATE:
+				await createOne.mutateAsync({ data });
+				break;
+			case MODAL_STATES_CONST.UPDATE:
+				await updateOne.mutateAsync({ product_id: expenseData.id, data });
+				break;
+			case MODAL_STATES_CONST.DELETE:
+				await deleteOne.mutateAsync({ product_id: expenseData.id, data });
+				break;
+
+			default:
+				break;
+		}
+
+		setFormState(FORM_STATES_CONST.LOADED);
+
+		setTimeout(() => {
+			setFormState(FORM_STATES_CONST.DEFAULT);
+			handleClose();
+		}, 320);
+	};
+
+	cols.push({
+		type: "toolbar",
+		title: "Действия",
+		accessor: "actions",
+		renderCell: (row) => {
+			return (
+				<>
+					<ActionButton
+						className={cn("Button-One")}
+						size="xs"
+						text="Редактировать"
+						icon={uikit.Icons.Edit}
+						onClick={() =>
+							setExpenseData(row) | handleOpen(MODAL_STATES_CONST.UPDATE)
+						}
+					/>
+
+					<ActionButton
+						className={cn("Button-One")}
+						size="xs"
+						text="Удалить"
+						icon={uikit.Icons.Trash}
+						onClick={() =>
+							setExpenseData(row) | handleOpen(MODAL_STATES_CONST.DELETE)
+						}
+					/>
+				</>
+			);
+		},
+	});
 
 	return (
-		<div className={cn("Group")} key={group.id}>
+		<div className={cn("Group")}>
 			<uikit.Text className={cn("Group-Title")} view="secondary">
 				{group.value}
 			</uikit.Text>
-
 			<uikit.Table
 				className={cn("Table")}
 				columns={cols}
@@ -254,24 +505,99 @@ function ExpensesTable({ group }) {
 				borderBetweenColumns
 				borderBetweenRows
 			/>
-
 			<ActionButton
+				className={cn("Button-Add")}
 				icon={uikit.Icons.Add}
 				text="Добавить"
-				onClick={() => console.log("clicked add")}
+				onClick={() =>
+					setExpenseData(null) | handleOpen(MODAL_STATES_CONST.CREATE)
+				}
 			/>
+			<uikit.Modal
+				className="Modal-Portal"
+				hasOverlay
+				isOpen={isModalOpen}
+				onClickOutside={() => handleClose()}
+				onEsc={() => handleClose()}
+				style={{ maxWidth: isSmart ? "640px" : "90%" }}
+			>
+				<Formik
+					initialValues={{
+						name: expenseData?.name || "",
+						quantity: expenseData?.quantity || "",
+						total: expenseData?.total || "",
+					}}
+					validationSchema={Yup.object({
+						name: Yup.string().trim().required("Это обязательное поле"),
+						quantity: Yup.string().trim().required("Это обязательное поле"),
+						total: Yup.string().trim().required("Это обязательное поле"),
+					})}
+					onSubmit={handleSubmit}
+				>
+					{(form) => (
+						<form className="Modal-Portal-Form" onSubmit={form.handleSubmit}>
+							<uikit.Text
+								className="Modal-Portal-Header"
+								as="p"
+								size="l"
+								view="secondary"
+							>
+								{{
+									[MODAL_STATES_CONST.CREATE]: "Создание",
+									[MODAL_STATES_CONST.UPDATE]: "Редактирование",
+									[MODAL_STATES_CONST.DELETE]: "Удаление",
+								}?.[modalState] || "Действие"}
+							</uikit.Text>
+
+							<div className="Modal-Portal-Body">
+								{cols
+									.filter((v) => !v.type)
+									.map((v) => (
+										<TextField
+											className="Modal-Portal-TextField"
+											type="text"
+											width="full"
+											label={v.title}
+											name={v.accessor}
+											key={v.accessor}
+											form={form}
+											disabled={modalState === MODAL_STATES_CONST.DELETE}
+										/>
+									))}
+							</div>
+
+							<div className="Modal-Portal-Footer">
+								<uikit.Button
+									size="m"
+									view="primary"
+									label={
+										{
+											[MODAL_STATES_CONST.CREATE]: "Создать",
+											[MODAL_STATES_CONST.UPDATE]: "Сохранить",
+											[MODAL_STATES_CONST.DELETE]: "Удалить",
+										}?.[modalState] || "Выполнить"
+									}
+									width="default"
+									type="submit"
+									disabled={formState !== FORM_STATES_CONST.DEFAULT}
+								/>
+							</div>
+						</form>
+					)}
+				</Formik>
+			</uikit.Modal>
 		</div>
 	);
 }
 
-function ActionButton({ icon, text, onClick }) {
+function ActionButton({ className, icon, text, onClick, ...props }) {
 	const [isVisible, setVisibility] = React.useState(false);
 	const ref = React.useRef(null);
 
 	return (
 		<>
 			<uikit.Button
-				className={cn("Button-Add")}
+				className={className}
 				type="button"
 				size="s"
 				view="ghost"
@@ -281,6 +607,7 @@ function ActionButton({ icon, text, onClick }) {
 				onMouseEnter={() => setVisibility(true)}
 				onMouseLeave={() => setVisibility(false)}
 				ref={ref}
+				{...props}
 			/>
 
 			{isVisible && (
