@@ -9,23 +9,35 @@ import * as projects from "@/external/projects";
 
 function Layout() {
 	const cn = utils.useClassName("Layout");
+	const navigate = ReactRouter.useNavigate();
+	const location = ReactRouter.useLocation();
 
 	const { isDesktop } = utils.useMediaQuery();
 	const [isVisible, setVisibility] = React.useState(isDesktop);
+	const [searchString, setSearchString] = React.useState("");
+
+	React.useEffect(() => {
+		const isCurrentListRoute = location.pathname === "/cabinet/projects";
+		if (isCurrentListRoute) return;
+		navigate("/cabinet/projects");
+	}, [searchString]);
 
 	return (
 		<div className={cn()}>
 			<div className={cn("Header")}>
-				<Header shared={[isVisible, setVisibility]} />
+				<Header
+					navigationState={[isVisible, setVisibility]}
+					searchState={[searchString, setSearchString]}
+				/>
 			</div>
 			<div className={cn("Main", { only_content: !isVisible })}>
 				<div className={cn("Navigation", { visible: isVisible })}>
-					<Navigation />
+					<Navigation navigationState={[isVisible, setVisibility]} />
 				</div>
 
 				<div className={cn("Inner")}>
 					<div className={cn("Content")}>
-						<ReactRouter.Outlet />
+						<ReactRouter.Outlet context={{ searchString }} />
 					</div>
 
 					<div className={cn("Footer")}>
@@ -37,14 +49,20 @@ function Layout() {
 	);
 }
 
-function Header({ shared }) {
+function Header({ navigationState, searchState }) {
 	const cn = utils.useClassName("Header");
 
 	return (
 		<div className={cn()}>
 			<uikit.Layout
 				rowCenter={{
-					left: <HeaderLeft cn={cn} shared={shared} />,
+					left: (
+						<HeaderLeft
+							cn={cn}
+							navigationState={navigationState}
+							searchState={searchState}
+						/>
+					),
 					right: <HeaderRight cn={cn} />,
 				}}
 			/>
@@ -52,9 +70,10 @@ function Header({ shared }) {
 	);
 }
 
-function HeaderLeft({ cn, shared }) {
+function HeaderLeft({ cn, navigationState, searchState }) {
 	const { isTablet } = utils.useMediaQuery();
-	const [isVisible, setVisibility] = shared;
+	const [isVisible, setVisibility] = navigationState;
+	const [searchString, setSearchString] = searchState;
 
 	const navigate = ReactRouter.useNavigate();
 
@@ -95,6 +114,8 @@ function HeaderLeft({ cn, shared }) {
 					<uikit.TextField
 						placeholder="Искать работу..."
 						leftSide={uikit.Icons.Search}
+						value={searchString}
+						onChange={(v) => setSearchString(v.e.target.value)}
 					/>
 				</div>
 			)}
@@ -170,7 +191,10 @@ function HeaderRight({ cn }) {
 	);
 }
 
-function Navigation() {
+function Navigation({ navigationState }) {
+	const { isTablet } = utils.useMediaQuery();
+	const [isVisible, setVisibility] = navigationState;
+
 	const cn = utils.useClassName("Navigation");
 	const cnStatus = utils.useClassName("Navigation-Status");
 
@@ -181,12 +205,18 @@ function Navigation() {
 		return queryAll.data;
 	}, [queryAll.data]);
 
+	const handleClick = () => {
+		if (isTablet) return;
+		setVisibility(false);
+	};
+
 	const NavigationList = () =>
 		data.map((item) => (
 			<ReactRouter.NavLink
 				className={({ isActive }) => cn("Item", { active: isActive })}
 				to={`/cabinet/projects/${item.id}`}
 				key={item.id}
+				onClick={handleClick}
 			>
 				<uikit.Text view="primary" truncate>
 					{item.title}
@@ -223,12 +253,12 @@ function Navigation() {
 					label="Добавить работу"
 					width="full"
 					iconRight={uikit.Icons.Add}
-					onClick={() => createOne.mutate()}
+					onClick={() => createOne.mutate() | handleClick()}
 				/>
 			</div>
 
 			<div className={cn("Label")}>
-				<ReactRouter.Link to="/cabinet">
+				<ReactRouter.Link to="/cabinet" onClick={handleClick}>
 					<uikit.Text view="secondary">Мои работы</uikit.Text>
 				</ReactRouter.Link>
 			</div>

@@ -591,6 +591,7 @@ function ExpensesTable({ project, group }) {
 }
 
 function ActionButton({ className, icon, text, onClick, ...props }) {
+	const { isTablet } = utils.useMediaQuery();
 	const [isVisible, setVisibility] = React.useState(false);
 	const ref = React.useRef(null);
 
@@ -604,7 +605,7 @@ function ActionButton({ className, icon, text, onClick, ...props }) {
 				onlyIcon
 				iconLeft={icon}
 				onClick={onClick}
-				onMouseEnter={() => setVisibility(true)}
+				onMouseEnter={() => isTablet && setVisibility(true)}
 				onMouseLeave={() => setVisibility(false)}
 				ref={ref}
 				{...props}

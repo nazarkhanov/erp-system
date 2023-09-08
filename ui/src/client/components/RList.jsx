@@ -1,6 +1,7 @@
 import "./RList.css";
 
 import * as React from "react";
+import * as ReactRouter from "react-router-dom";
 import * as utils from "@/shared/utils";
 import * as uikit from "@/shared/uikit";
 import * as components from "@/components";
@@ -9,13 +10,18 @@ import * as projects from "@/external/projects";
 const cn = utils.useClassName("Cabinet-List");
 
 function List() {
+	const layout = ReactRouter.useOutletContext();
 	const queryAll = projects.useList();
 	const createOne = projects.useCreate();
 	const deleteOne = projects.useDelete();
 
-	const data = React.useMemo(() => {
-		return queryAll.data;
-	}, [queryAll.data]);
+	const data = React.useMemo(
+		() =>
+			queryAll.data?.filter((item) =>
+				item.title.toLowerCase().includes(layout.searchString.toLowerCase())
+			),
+		[queryAll.data, layout.searchString]
+	);
 
 	const { isDesktop, isTablet, isSmart } = utils.useMediaQuery();
 
